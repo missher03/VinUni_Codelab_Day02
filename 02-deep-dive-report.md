@@ -5,8 +5,8 @@
 > | # | Họ và tên | Email | Branch | Phụ trách trong báo cáo này |
 > |---|---|---|---|---|
 > | 1 | Nguyễn Văn Quốc (Trưởng nhóm) | quoc.nvsoict@gmail.com | `nguyenvanquoc` | Mở bài, 3.2 Problem Statement, ghép báo cáo |
-> | 2 | Lê Quốc Khánh | _[bổ sung]_ | `lequockhanh` | 3.1 Current-State Workflow + `04-workflow-diagram.png` |
-> | 3 | Lê Thanh Nguyên | _[bổ sung]_ | `lethanhnguyen` | 3.3a AI-Fit Matrix |
+> | 2 | Lê Quốc Khánh | — | `lequockhanh` | 3.1 Current-State Workflow + `04-workflow-diagram.png` |
+> | 3 | Lê Thanh Nguyên | — | `lethanhnguyen` | 3.3a AI-Fit Matrix |
 > | 4 | Nguyễn Mạnh Cường | nggmanhcuong25@gmail.com | `nguyen-manh-cuong` | 3.3b Future-State Flow |
 > | 5 | Nguyễn Minh Quân | minhquannm0905@gmail.com | `nguyen-minh-quan` | Phase 5 Evaluate & Decision |
 >
@@ -206,19 +206,101 @@ Các bước bám theo luồng hiện trạng ở mục 3.1 (bệnh nhân nhắn
 
 ### 3.3b. Future-State Flow (🔵 AI Step · 🟢 Human Step · ↩️ Fallback)
 
-*Phụ trách: Nguyễn Mạnh Cường* — **[Chờ nội dung từ branch `nguyen-manh-cuong`]**
+*Phụ trách: Nguyễn Mạnh Cường (nội dung được trưởng nhóm hoàn thiện khi ghép báo cáo)*
+
+**Kiến trúc:** Hybrid = Rule (lớp an toàn trước và sau) + LLM Feature (một lần gọi) + 🟢 điều dưỡng điều phối duyệt hàng đợi (xem 3.3a).
+
+```text
+ Bệnh nhân nhắn app MyVinmec / gọi hotline (cuộc gọi được ghi chú thành text)
+        │
+        ▼
+┌──────────────────────────────┐
+│ F1. Gắn hồ sơ (Rule/tích hợp)│  khớp ≥ 2 định danh; không khớp ──↩️──▶ 🟢 CSKH xác minh
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐   có dấu hiệu đỏ
+│ F2. Rule cảnh báo đỏ         │ ─────────────────▶ P0 ── chuyển NGAY kênh cấp cứu / bác sĩ trực
+│ (từ khóa do bác sĩ duyệt)    │                        (không chờ LLM)
+└──────────────┬───────────────┘
+               │ không có
+               ▼
+┌──────────────────────────────┐   timeout / lỗi API / JSON sai
+│ 🔵 F3. LLM: xếp P1–P3,       │ ─────────────────▶ ↩️ hàng "Chưa phân loại", xử lý NGANG P1
+│ tóm tắt kèm hồ sơ,           │
+│ liệt kê thông tin còn thiếu  │   phân vân / confidence < 0.7
+└──────────────┬───────────────┘ ─────────────────▶ ↩️ chọn MỨC CAO HƠN + gắn cờ "AI không chắc"
+               ▼
+┌──────────────────────────────┐   có lời khuyên y khoa / mức không hợp lệ
+│ F4. Validator (Rule)         │ ─────────────────▶ ↩️ loại output, vào hàng "Chưa phân loại"
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ F5. Định tuyến theo mức      │  P0 cấp cứu · P1 bác sĩ (<2h) · P2 điều dưỡng (trong ngày) · P3 CSKH (<24h)
+│ (Rule, bảng do khoa duyệt)   │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ 🟢 F6. Điều dưỡng điều phối   │  xem hàng đợi đã sắp xếp, có quyền đổi mức;
+│ duyệt hàng đợi               │  mỗi lần sửa mức được lưu làm dữ liệu đánh giá
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ 🟢 F7. Bác sĩ / điều dưỡng /  │  người quyết định chuyên môn và nội dung trả lời;
+│ CSKH xử lý và phản hồi       │  AI KHÔNG gửi gì cho bệnh nhân
+└──────────────────────────────┘
+```
+
+| # | Bước | Loại | Ai/cái gì làm | Fallback ↩️ |
+|---|---|---|---|---|
+| F1 | Gắn hồ sơ (lần khám gần nhất, đơn thuốc, lời dặn) | Rule / tích hợp | Hệ thống | Không khớp ≥ 2 định danh → CSKH xác minh thủ công |
+| F2 | Bắt dấu hiệu cảnh báo đỏ → P0 | Rule | Bộ từ khóa do bác sĩ duyệt | Không cần LLM; P0 đi thẳng tới kênh cấp cứu |
+| F3 | Xếp P1/P2/P3, tóm tắt, ghi thông tin thiếu | 🔵 AI Step (LLM) | 1 lần gọi, output JSON cố định | Lỗi → hàng "Chưa phân loại" xử lý ngang P1; phân vân → chọn mức cao hơn; **không được hạ** mức Rule đã gán |
+| F4 | Kiểm tra output (schema, mức hợp lệ, không tư vấn y khoa) | Rule (validator) | Code | Vi phạm → loại output, vào hàng "Chưa phân loại" |
+| F5 | Định tuyến theo mức ưu tiên | Rule | Bảng ánh xạ do khoa duyệt | Có log mỗi lần định tuyến |
+| F6 | Duyệt hàng đợi | 🟢 Human Step (HITL) | Điều dưỡng điều phối | Đổi mức khi thấy sai; cờ "AI không chắc" được xem trước |
+| F7 | Trả lời chuyên môn, phản hồi bệnh nhân | 🟢 Human Step | Bác sĩ / điều dưỡng / CSKH | — |
+
+**So với hiện tại:** khâu đọc – phân loại – chuyển (~8–12 phút/lượt) chuyển thành AI gắn nhãn + tóm tắt **< 10 giây** và người chỉ duyệt; ca P1 được đẩy lên đầu hàng đợi thay vì chờ FIFO, hướng tới **< 30 phút** tới tay bác sĩ (hiện ~2–4 giờ, ước tính). Bác sĩ nhận sẵn bản tóm tắt kèm **nguyên văn tin nhắn** nên không phải đọc lại toàn bộ lịch sử.
+
+**Hai module còn lại của CareFollow** (diễn giải lời dặn bác sĩ, chăm sóc chủ động) chỉ đóng vai trò **nguồn đầu vào**: câu hỏi phát sinh từ chúng cũng đi qua luồng F1–F7, và là lộ trình mở rộng sau khi module này chạy ổn định.
 
 ---
 
 ## 🏁 Phase 5 — EVALUATE
 
-*Phụ trách: Nguyễn Minh Quân* — **[Chờ nội dung từ branch `nguyen-minh-quan`]**
+*Phụ trách: Nguyễn Minh Quân (nội dung được trưởng nhóm hoàn thiện khi ghép báo cáo)*
 
 ### AI Readiness Checklist
 
+| # | Câu hỏi | Trả lời | Bằng chứng / điều còn thiếu |
+|---|---|:-:|---|
+| 1 | Chúng tôi có sẵn dữ liệu mẫu/logs sạch để test? | ❌ **Chưa** | Chưa có bộ câu hỏi sau điều trị đã **ẩn danh và được bác sĩ gán nhãn P0–P3** → chưa chứng minh được recall P0/P1 ≥ 98%. Chưa có danh sách từ khóa cảnh báo đỏ được duyệt. Chưa xác nhận MyVinmec/hotline cho lấy tin nhắn và hồ sơ qua API chỉ-đọc. |
+| 2 | Rủi ro khi AI sai có nằm trong tầm kiểm soát (qua HITL hoặc Fallback)? | ✅ **Có, trên thiết kế** | Rule bắt P0 trước LLM; LLM chỉ được nâng mức; phân vân → mức cao hơn; lỗi → xử lý ngang P1; điều dưỡng duyệt hàng đợi; AI không gửi gì cho bệnh nhân (3.3a, 3.3b). Chưa kiểm chứng bằng dữ liệu thật. |
+| 3 | Stakeholders sẵn sàng thay đổi quy trình làm việc cũ? | ⚠️ **Chưa xác nhận** | Cần một khoa thí điểm đồng ý: bác sĩ soạn và duyệt từ khóa đỏ, điều dưỡng điều phối nhận thêm việc duyệt hàng đợi, CSKH đổi từ "đọc rồi chuyển" sang "xem hàng đợi đã sắp xếp". Chưa phỏng vấn trực tiếp các vai trò này. |
+
 ### Quyết định
 
+- [ ] GO
+- [x] **NOT YET (Cần tích lũy thêm dữ liệu / xác lập baseline)**
+- [ ] NO-GO
+
 ### Justification
+
+1. **Bài toán đáng làm và hợp với AI.** Nút thắt là đọc – hiểu tiếng Việt đời thường để phân loại (3.1, 3.2); Rule một mình bỏ lọt ca P1 mô tả mơ hồ, còn Agent quá rủi ro trong y tế (3.3a). Hybrid Rule + LLM + HITL là kiến trúc phù hợp, chi phí thấp (một lần gọi LLM/lượt), nên **không phải NO-GO**.
+2. **Nhưng chưa thể GO vì thiếu bằng chứng an toàn.** Trong y tế, sai lầm nguy hiểm nhất là *under-triage*. Mục tiêu recall P0/P1 ≥ 98% là điều kiện bắt buộc, mà hiện **chưa có bộ dữ liệu gán nhãn** để đo, và mọi số về thời gian (8–12 phút/lượt, 2–4 giờ chờ) vẫn là **ước tính**, chưa có baseline thật.
+3. **Thiếu sự cam kết của người vận hành.** Hệ thống chỉ an toàn khi có bác sĩ duyệt từ khóa đỏ và điều dưỡng duyệt hàng đợi; điều này chưa được xác nhận.
+
+**Lộ trình để chuyển sang GO (phạm vi hẹp):**
+
+| Bước | Việc | Điều kiện đạt |
+|---|---|---|
+| 1 | Chọn **1 khoa ngoại** (bệnh nhân sau mổ nhỏ) làm thí điểm; đo baseline 2 tuần: thời gian gửi → bác sĩ mở ca, tỉ lệ loại câu hỏi | Có baseline thật thay cho số ước tính |
+| 2 | Lấy câu hỏi cũ, **ẩn danh**, nhờ bác sĩ/điều dưỡng gán nhãn P0–P3; bác sĩ soạn danh sách từ khóa đỏ | Có bộ test gán nhãn + từ khóa đã duyệt |
+| 3 | Chạy **offline** Rule + LLM trên bộ test | Recall P0/P1 ≥ 98%, không có ca P0 nào bị xếp xuống P2/P3 |
+| 4 | Chạy **shadow mode** 2–4 tuần: AI xếp hàng song song, người vẫn làm như cũ, so sánh kết quả | Tỉ lệ điều dưỡng phải sửa mức chấp nhận được |
+| 5 | **GO hẹp** tại khoa thí điểm, điều dưỡng duyệt 100% hàng đợi | Ca P1 tới bác sĩ < 30 phút, P3 qua điều dưỡng giảm 40% |
+
+**Ngưỡng dừng:** nếu sau bước 3 recall P0/P1 dưới 98%, hoặc có ca P0 bị xếp xuống P2/P3 mà không sửa được bằng cách bổ sung Rule, thì **không triển khai** và chỉ giữ phần Rule cảnh báo đỏ.
 
 ---
 

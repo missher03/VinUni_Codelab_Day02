@@ -1,13 +1,14 @@
 # 01 — Problem Scan & Quick Problem Cards
 
-> **Tên nhóm:** _[điền tên nhóm]_
+> **Tên nhóm:** Nhóm 50
 >
-> | # | Họ và tên | Email | Vai trò |
-> |---|---|---|---|
-> | 1 | _[Họ tên]_ | _[email]_ | Thành viên |
-> | 2 | Nguyễn Văn Quốc | quoc.nvsoict@gmail.com | Trưởng nhóm  |
-> | 3 | _[Họ tên]_ | _[email]_ | Thành viên |
-> | 4 | _[Họ tên]_ | _[email]_ | Thành viên |
+> | # | Họ và tên | Email | Branch | Vai trò |
+> |---|---|---|---|---|
+> | 1 | Nguyễn Văn Quốc | quoc.nvsoict@gmail.com | `nguyenvanquoc` | Trưởng nhóm |
+> | 2 | Lê Quốc Khánh | — | `lequockhanh` | Thành viên |
+> | 3 | Lê Thanh Nguyên | — | `lethanhnguyen` | Thành viên |
+> | 4 | Nguyễn Mạnh Cường | nggmanhcuong25@gmail.com | `nguyen-manh-cuong` | Thành viên |
+> | 5 | Nguyễn Minh Quân | minhquannm0905@gmail.com | `nguyen-minh-quan` | Thành viên |
 >
 > **Người thực hiện file này:** Nguyễn Văn Quốc — quoc.nvsoict@gmail.com
 

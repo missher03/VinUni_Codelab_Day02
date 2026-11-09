@@ -4,6 +4,8 @@
 >
 > **Người viết:** Nguyễn Văn Quốc · branch `nguyenvanquoc` · Trưởng nhóm, Nhóm 50
 >
+> **Nhóm 50:** Nguyễn Văn Quốc (trưởng nhóm) · Lê Quốc Khánh · Lê Thanh Nguyên · Nguyễn Mạnh Cường · Nguyễn Minh Quân
+>
 > **Công cụ AI đã dùng:**
 > * **Claude** (claude.ai, có quyền đọc/sửa thư mục repo trên máy): trợ lý đồng hành để đọc đề, tìm và phản biện bài toán, viết nháp file `.md`, viết code prototype, hỗ trợ thao tác Git.
 > * **OpenAI gpt-4o-mini / Gemini 2.5 Flash**: mô hình được stress-test trong `starter-code/prompt_prototype.py` (script hỗ trợ cả hai, đọc khóa từ `.env`).
