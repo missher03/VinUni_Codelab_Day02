@@ -206,7 +206,13 @@ Các bước bám theo luồng hiện trạng ở mục 3.1 (bệnh nhân nhắn
 
 ### 3.3b. Future-State Flow (🔵 AI Step · 🟢 Human Step · ↩️ Fallback)
 
-*Phụ trách: Nguyễn Mạnh Cường (nội dung được trưởng nhóm hoàn thiện khi ghép báo cáo)*
+*Phụ trách: Nguyễn Mạnh Cường (sơ đồ); phần chữ và bảng được trưởng nhóm bổ sung khi ghép báo cáo*
+
+Sơ đồ Future-State Flow của Cường:
+
+![Future-State Flow](3.3b-future-state-flow.png)
+
+Phiên bản chữ chi tiết:
 
 **Kiến trúc:** Hybrid = Rule (lớp an toàn trước và sau) + LLM Feature (một lần gọi) + 🟢 điều dưỡng điều phối duyệt hàng đợi (xem 3.3a).
 
