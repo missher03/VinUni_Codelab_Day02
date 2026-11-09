@@ -41,7 +41,7 @@ FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.6-flash")
 # (Test 3 ~12.4s), nên mỗi lần gọi được chờ tối đa 20s nhưng không vượt ngân sách còn lại.
 REQUEST_TIMEOUT_S = 20
 SCRIPT_BUDGET_S = 26
-MIN_ATTEMPT_S = 4  # còn ít hơn mức này thì không gọi thêm model dự phòng
+MIN_ATTEMPT_S = 10  # còn ít hơn mức này thì không gọi thêm model dự phòng
 ANSWERED_BY = {}  # user_input -> model đã trả lời (để in ra khi báo cáo)
 
 # ===========================================================================
