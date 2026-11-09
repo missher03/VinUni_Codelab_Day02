@@ -37,9 +37,11 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 # model dự phòng. Output vẫn được kiểm tra thô; script in rõ model nào đã trả lời.
 FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.6-flash")
 
-# Autograder giới hạn 30s cho cả script.
-REQUEST_TIMEOUT_MS = 10_000
-TOTAL_DEADLINE_S = 22  # không bắt đầu lần gọi mới nếu đã quá mốc này
+# Autograder giới hạn 30s cho cả script. Đo thực tế: 1 request mất 2–13s tuỳ tải server
+# (Test 3 ~12.4s), nên mỗi lần gọi được chờ tối đa 20s nhưng không vượt ngân sách còn lại.
+REQUEST_TIMEOUT_S = 20
+SCRIPT_BUDGET_S = 26
+MIN_ATTEMPT_S = 4  # còn ít hơn mức này thì không gọi thêm model dự phòng
 ANSWERED_BY = {}  # user_input -> model đã trả lời (để in ra khi báo cáo)
 
 # ===========================================================================
@@ -109,10 +111,7 @@ def _get_client():
         from google.genai import types
 
         api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-        _client = genai.Client(
-            api_key=api_key,
-            http_options=types.HttpOptions(timeout=REQUEST_TIMEOUT_MS),
-        )
+        _client = genai.Client(api_key=api_key)
     return _client
 
 
@@ -123,19 +122,26 @@ def evaluate_prompt(user_input: str) -> str:
     """
     from google.genai import errors, types
 
+    try:  # google-genai 3.x dùng httpx2, bản cũ dùng httpx
+        import httpx2 as _http
+    except ImportError:
+        import httpx as _http
+
     client = _get_client()
-    config = types.GenerateContentConfig(
-        system_instruction=SYSTEM_PROMPT,
-        temperature=0.0,  # muốn hành vi ổn định, lặp lại được khi test ranh giới
-        max_output_tokens=1024,
-        # Tắt "thinking" để phản hồi nhanh, giữ cả bộ test dưới 30s.
-        thinking_config=types.ThinkingConfig(thinking_budget=0),
-    )
     models = [GEMINI_MODEL] + ([FALLBACK_MODEL] if FALLBACK_MODEL != GEMINI_MODEL else [])
     last_error = None
     for model in models:
-        if time.monotonic() - _START > TOTAL_DEADLINE_S:
+        remaining = SCRIPT_BUDGET_S - (time.monotonic() - _START)
+        if remaining < MIN_ATTEMPT_S:
             break
+        config = types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            temperature=0.0,  # muốn hành vi ổn định, lặp lại được khi test ranh giới
+            max_output_tokens=1024,
+            # Tắt "thinking" để phản hồi nhanh, giữ cả bộ test dưới 30s.
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            http_options=types.HttpOptions(timeout=int(min(REQUEST_TIMEOUT_S, remaining) * 1000)),
+        )
         try:
             response = client.models.generate_content(
                 model=model, contents=user_input, config=config
@@ -147,6 +153,8 @@ def evaluate_prompt(user_input: str) -> str:
             # Lỗi khác (key sai, request sai) -> báo lỗi ngay.
             if e.code != 429 and not (500 <= (e.code or 0) < 600):
                 raise
+            last_error = e
+        except (_http.TimeoutException, TimeoutError) as e:  # server chậm -> thử model dự phòng
             last_error = e
     raise last_error or TimeoutError("Hết thời gian cho phép trước khi gọi được model")
 
