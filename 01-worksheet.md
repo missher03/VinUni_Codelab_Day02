@@ -63,11 +63,11 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+| 1 |Tự động phân loại phản ánh cư dân Vinhomes
+| 2 |Dự đoán nhu cầu đặt xe cho Xanh SM
+| 3 |Hỗ trợ khách hàng lưu trú
+| 4 |Dự đoán nguy cơ lỗi phương tiện VinFast
+| 5 |Hỗ trợ điều phối lịch khám
 
 ---
 
@@ -79,7 +79,7 @@ Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Pr
 ┌─────────────────────────────────────────────────────────────┐
 │ QUICK PROBLEM CARD #___                                     │
 │                                                             │
-│ Bài toán (1 câu): ________________________________________  │
+│ Bài toán (1 câu): Dự đoán nguy cơ lỗi phương tiện VinFast  │
 │ Công ty thành viên: [ ] VinFast  [ ] Xanh SM  [ ] Vinhomes  │
 │                     [ ] Vinmec   [ ] Khác (Ghi rõ)________  │
 │                                                             │
