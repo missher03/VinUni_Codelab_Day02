@@ -7,7 +7,7 @@
 > | 1 | Nguyễn Văn Quốc (Trưởng nhóm) | quoc.nvsoict@gmail.com | `nguyenvanquoc` | Mở bài, 3.2 Problem Statement, ghép báo cáo |
 > | 2 | Lê Quốc Khánh | — | `lequockhanh` | 3.1 Current-State Workflow + `04-workflow-diagram.png` |
 > | 3 | Lê Thanh Nguyên | — | `lethanhnguyen` | 3.3a AI-Fit Matrix |
-> | 4 | Nguyễn Mạnh Cường | — | `nguyen-manh-cuong` | 3.3b Future-State Flow |
+> | 4 | Nguyễn Mạnh Cường | nggmanhcuong25@gmail.com | `nguyen-manh-cuong` | 3.3b Future-State Flow |
 > | 5 | Nguyễn Minh Quân | minhquannm0905@gmail.com | `nguyen-minh-quan` | Phase 5 Evaluate & Decision |
 >
 > ⚠️ **Ghi chú về số liệu:** số liệu quy mô Vinmec có nguồn [1]. Mọi con số về thời gian xử lý, tỉ lệ và mục tiêu là **ước tính của nhóm** (Bảng số liệu chung trong `04_task.md`), **chưa đo trên dữ liệu thật của Vinmec**. Cách đo baseline được nêu ở mục 3.2.
