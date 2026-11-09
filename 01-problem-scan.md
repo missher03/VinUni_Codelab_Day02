@@ -4,8 +4,8 @@
 >
 > | # | Họ và tên | Email | Vai trò |
 > |---|---|---|---|
-> | 1 | _[Họ tên]_ | _[email]_ | Trưởng nhóm |
-> | 2 | Nguyễn Văn Quốc | quoc.nvsoict@gmail.com | Thành viên |
+> | 1 | _[Họ tên]_ | _[email]_ | Thành viên |
+> | 2 | Nguyễn Văn Quốc | quoc.nvsoict@gmail.com | Trưởng nhóm  |
 > | 3 | _[Họ tên]_ | _[email]_ | Thành viên |
 > | 4 | _[Họ tên]_ | _[email]_ | Thành viên |
 >
