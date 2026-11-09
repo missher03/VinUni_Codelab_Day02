@@ -121,24 +121,11 @@ Quy trình xử lý sự cố hết pin thực địa hiện tại của điều
 
 ## 3.3. Future-State Flow & AI Fit
 
-* **AI Fit:** Chọn **LLM Feature** (không cần Agent tự trị vì quy trình có cấu trúc cố định, rủi ro khi điều phối sai trạm sạc có thể khiến xe cạn kiệt pin giữa đường và gây tắc nghẽn giao thông).
-* **Quy trình tương lai (Future-State):**
-
-```text
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│ Bước 1       │     │ Bước 2       │     │ Bước 3       │     │ Bước 4       │
-│ Nhận cuộc    │     │ 🔵 Auto-pull │     │ 🔵 AI draft  │     │ 🟢 Dispatch  │
-│ gọi sự cố    │ ──→ │ vị trí &     │ ──→ │ SMS chỉ dẫn  │ ──→ │ click duyệt  │
-│              │     │ trạm sạc trống│    │ & chỉ đường  │     │ & gửi tài xế │
-└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
-                                                                      │
-                                                                      ▼
-                                                               ↩️ Fallback:
-                                                               Nếu AI draft lỗi,
-                                                               Dispatcher tự viết
-                                                               tay lại như cũ.
-```
-
+Xác định mức AI Fit (AI-Fit Matrix): Giải pháp thuộc nhóm nào? [ ] Rule / State-Machine [ ] LLM Feature [ ] Agentic Loop.
+Vẽ Future-State Flow: Đánh dấu rõ:
+🔵 AI Step: Tác vụ LLM xử lý.
+🟢 Human Step (HITL): Bước con người phê duyệt/review (Human-in-the-loop).
+↩️ Fallback: Kế hoạch dự phòng khi LLM trả về kết quả lỗi hoặc không tự tin.
 ---
 
 # 💻 Phase 4 — Prompt Prototype & Boundary Test
