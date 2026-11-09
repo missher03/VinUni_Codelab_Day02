@@ -63,11 +63,11 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+| 1 | Vinhomes | Lặp lại (Repetitive) | Phân loại phản ánh cư dân gửi từ app, hotline hoặc email (mất nước, hỏng đèn, ồn ào, thang máy) và chuyển đến đúng ban quản lý hoặc đội vận hành của từng tòa. |
+| 2 | Vinhomes | Tốn thời gian (Time-consuming) | Nhân viên CSKH phải tra cứu quy định rồi soạn phản hồi thủ công cho các câu hỏi lặp lại về phí quản lý, tiện ích, thẻ cư dân và thủ tục. |
+| 3 | Vinhomes | AI có thể tốt hơn (AI-upgrade) | Trợ lý cư dân hỗ trợ tra cứu và chuẩn bị hồ sơ đăng ký thi công nội thất, đăng ký gửi xe hoặc sử dụng tiện ích thay cho các hướng dẫn rập khuôn. |
+| 4 | Vinhomes | Pain từ stakeholder | Ban quản lý khó nhận biết sớm nhiều phản ánh tương tự từ cùng một khu vực để phát hiện sự cố diện rộng như mất nước, mất điện hoặc trục trặc thang máy. |
+| 5 | Vinhomes | Tốn thời gian (Time-consuming) | Tổng hợp phản hồi từ nhiều kênh thành báo cáo sự cố, phân tích nguyên nhân và theo dõi SLA hằng ngày còn làm thủ công. |
 
 ---
 
@@ -75,28 +75,51 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 
 Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Problem Cards** dưới đây (10 phút/card).
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ QUICK PROBLEM CARD #___                                     │
-│                                                             │
-│ Bài toán (1 câu): ________________________________________  │
-│ Công ty thành viên: [ ] VinFast  [ ] Xanh SM  [ ] Vinhomes  │
-│                     [ ] Vinmec   [ ] Khác (Ghi rõ)________  │
-│                                                             │
-│ Ai đang đau (Actor)? ______________________________________ │
-│                                                             │
-│ Workflow thủ công hiện tại (3-5 bước):                      │
-│   1. ___ ──> 2. ___ ──> 3. ___ ──> 4. ___                   │
-│                                                             │
-│ Bước nào tốn thời gian/lỗi nhất? ___ (⏱ ___ phút/lượt)      │
-│ AI có thể nhảy vào hỗ trợ ở bước nào? _____________________ │
-│                                                             │
-│ Đo thành công bằng gì (Metric có số)? ______________________ │
-│   VD: "Giảm thời gian soạn phản hồi từ 10 min ──> under 2 min"│
-│                                                             │
-│ Quick Architecture: [ ] No AI  [ ] Rule  [ ] LLM  [ ] Agent │
-└─────────────────────────────────────────────────────────────┘
-```
+### QUICK PROBLEM CARD #1
+
+- **Bài toán (1 câu):** Tự động phân loại và điều hướng phản ánh cư dân đến đúng ban quản lý Vinhomes.
+- **Công ty thành viên:** [x] Vinhomes
+- **Ai đang đau (Actor)?** Nhân viên CSKH, ban quản lý tòa nhà, đội kỹ thuật và cư dân cần phản hồi sớm.
+- **Workflow thủ công hiện tại:**
+  1. Cư dân gửi phản ánh qua app, hotline hoặc email.
+  2. Nhân viên CSKH đọc nội dung và xác định tòa nhà/khu vực.
+  3. Nhân viên phân loại loại sự cố và mức độ ưu tiên.
+  4. Chuyển thông tin cho kỹ thuật, an ninh hoặc vệ sinh.
+  5. Theo dõi và phản hồi lại cư dân.
+- **Bước tốn thời gian/lỗi nhất:** Đọc, phân loại và chuyển đúng bộ phận; khoảng **3–5 phút/lượt**, dễ chuyển nhầm khi nội dung ngắn hoặc không rõ ràng.
+- **AI có thể nhảy vào hỗ trợ ở bước nào?** Trích xuất tòa nhà, loại sự cố, mức độ khẩn cấp và tạo ticket nháp; rule-based kiểm tra các từ khóa khẩn cấp.
+- **Đo thành công bằng gì (Metric có số)?** Ít nhất **85%** yêu cầu được phân loại đúng và có ticket nháp trong **dưới 10 giây**; giảm thời gian phân loại trung bình từ **4 phút xuống dưới 1 phút**.
+- **Quick Architecture:** [x] Rule  [x] LLM
+
+### QUICK PROBLEM CARD #2
+
+- **Bài toán (1 câu):** Hỗ trợ nhân viên CSKH soạn phản hồi cho các câu hỏi lặp lại của cư dân.
+- **Công ty thành viên:** [x] Vinhomes
+- **Ai đang đau (Actor)?** Nhân viên CSKH phải phản hồi nhiều yêu cầu tương tự; cư dân chờ câu trả lời rõ ràng và nhất quán.
+- **Workflow thủ công hiện tại:**
+  1. Cư dân hỏi về phí, tiện ích, thẻ cư dân hoặc thủ tục.
+  2. Nhân viên tìm FAQ, quy định hoặc biểu mẫu liên quan.
+  3. Nhân viên soạn câu trả lời.
+  4. Nhân viên kiểm tra lại chính sách và gửi phản hồi.
+- **Bước tốn thời gian/lỗi nhất:** Tra cứu tài liệu và viết lại câu trả lời; khoảng **5–10 phút/lượt**, có nguy cơ dùng thông tin cũ hoặc thiếu ngữ cảnh.
+- **AI có thể nhảy vào hỗ trợ ở bước nào?** Tra cứu kho kiến thức đã phê duyệt và tạo câu trả lời nháp có nguồn để nhân viên review trước khi gửi.
+- **Đo thành công bằng gì (Metric có số)?** Giảm thời gian soạn phản hồi đầu tiên từ **8 phút xuống dưới 2 phút**; ít nhất **90%** bản nháp được duyệt hoặc chỉ cần chỉnh sửa nhỏ.
+- **Quick Architecture:** [x] LLM
+
+### QUICK PROBLEM CARD #3
+
+- **Bài toán (1 câu):** Phát hiện sớm sự cố diện rộng từ các phản ánh cư dân tương tự.
+- **Công ty thành viên:** [x] Vinhomes
+- **Ai đang đau (Actor)?** Ban quản lý khu đô thị, đội vận hành hiện trường và cư dân bị ảnh hưởng bởi sự cố.
+- **Workflow thủ công hiện tại:**
+  1. Cư dân gửi phản ánh qua nhiều kênh.
+  2. Nhân viên xử lý từng phản ánh như ticket riêng lẻ.
+  3. Quản lý tổng hợp số liệu theo ca hoặc cuối ngày.
+  4. Đội vận hành mới nhận ra các phản ánh liên quan và điều phối xử lý.
+- **Bước tốn thời gian/lỗi nhất:** Nhóm các phản ánh liên quan giữa nhiều kênh; thường phát hiện muộn sau **30–60 phút** hoặc khi số ticket đã tăng.
+- **AI có thể nhảy vào hỗ trợ ở bước nào?** Gom cụm nội dung, địa điểm và thời gian tương tự; cảnh báo ban quản lý khi vượt ngưỡng. Quy tắc ngưỡng và nhân viên trực quyết định kích hoạt xử lý khẩn.
+- **Đo thành công bằng gì (Metric có số)?** Phát hiện ít nhất **80%** sự cố có từ **5 phản ánh liên quan** trong vòng **10 phút**; giảm thời gian phát hiện sự cố từ **45 phút xuống dưới 15 phút**.
+- **Quick Architecture:** [x] Rule  [x] LLM
 
 > [!TIP]
 > **🤖 AI Prompts — Stress-Test thẻ bài toán:**
