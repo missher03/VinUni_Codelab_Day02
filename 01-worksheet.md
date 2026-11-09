@@ -63,11 +63,11 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+| 1 |VinFast |Stakeholder Pain |Chủ xe chỉ phát hiện pin xuống cấp khi xe đã có dấu hiệu bất thường, gây phát sinh chi phí bảo trì lớn. |
+| 2 |Xanh SM |Repetitive |Hệ thống điều phối xe trong giờ cao điểm chưa tối ưu khiến khách chờ lâu và tài xế phải chạy rỗng nhiều. |
+| 3 |Vinhomes|Time-consuming |Ban quản lý phải xử lý hàng trăm yêu cầu cư dân mỗi ngày qua hotline và email, mất nhiều thời gian phản hồi. |
+| 4 |Vinmec |AI-upgrade |Bác sĩ phải đọc số lượng lớn ảnh X-Ray/CT hằng ngày, dễ bỏ sót bất thường nhỏ. |
+| 5 |Vinpearl/VinWonders |Stakeholder Pain |Khách phải xếp hàng lâu tại các trò chơi và điểm check-in vào mùa cao điểm.|
 
 ---
 
@@ -79,23 +79,94 @@ Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Pr
 ┌─────────────────────────────────────────────────────────────┐
 │ QUICK PROBLEM CARD #___                                     │
 │                                                             │
-│ Bài toán (1 câu): ________________________________________  │
-│ Công ty thành viên: [ ] VinFast  [ ] Xanh SM  [ ] Vinhomes  │
+│ Bài toán (1 câu): Tối ưu điều phối tài xế Xanh SM trong giờ cao điểm│
+│ Công ty thành viên: [ ] VinFast  [v] Xanh SM  [ ] Vinhomes  │
 │                     [ ] Vinmec   [ ] Khác (Ghi rõ)________  │
 │                                                             │
-│ Ai đang đau (Actor)? ______________________________________ │
+│ Ai đang đau (Actor)? Tài xế Xanh SM - Bộ phận điều phối - Khách hàng │
 │                                                             │
 │ Workflow thủ công hiện tại (3-5 bước):                      │
-│   1. ___ ──> 2. ___ ──> 3. ___ ──> 4. ___                   │
+│   1. Khách đặt xe ──> 2. Hệ thống tìm tài xế gần nhất ──> 3.Tài xế nhận chuyến ──> 4. Đến điểm đón khách ──> 5. Hoàn thành chuyến │
 │                                                             │
-│ Bước nào tốn thời gian/lỗi nhất? ___ (⏱ ___ phút/lượt)      │
-│ AI có thể nhảy vào hỗ trợ ở bước nào? _____________________ │
+│ Bước nào tốn thời gian/lỗi nhất? Phân bổ tài xế (⏱ 3-8 phút/lượt)      │
+│ AI có thể nhảy vào hỗ trợ ở bước nào? Bước 2 AI dự báo nhu cầu và tối ưu điều phối xe theo từng khu vực │
 │                                                             │
-│ Đo thành công bằng gì (Metric có số)? ______________________ │
+│ Đo thành công bằng gì (Metric có số)? Giảm thời gian chờ từ 8 phút xuống dưới 5 phút Giảm tỷ lệ hủy chuyến từ 12% xuống dưới 5% │
 │   VD: "Giảm thời gian soạn phản hồi từ 10 min ──> under 2 min"│
 │                                                             │
-│ Quick Architecture: [ ] No AI  [ ] Rule  [ ] LLM  [ ] Agent │
+│ Quick Architecture: [ ] No AI  [v] Rule  [v] LLM  [v] Agent │
 └─────────────────────────────────────────────────────────────┘
+QUICK PROBLEM CARD #2
+
+Bài toán (1 câu): Dự đoán sức khỏe pin xe điện VinFast trước khi xảy ra sự cố.
+
+Công ty thành viên: ☑ VinFast
+
+Ai đang đau (Actor)?
+
+Chủ xe
+Trung tâm bảo hành
+
+Workflow hiện tại
+
+Xe vận hành
+Pin xuống cấp dần
+Người dùng phát hiện lỗi
+Mang xe đi bảo hành
+
+Bottleneck
+
+Bước 3
+
+⏱ Có thể mất nhiều tuần mới phát hiện
+
+AI hỗ trợ
+
+Phân tích dữ liệu pin và cảnh báo sớm.
+
+Metric
+
+Giảm 40% sự cố pin bất ngờ.
+
+Quick Architecture
+
+☑ Agent
+QUICK PROBLEM CARD #3
+
+Bài toán (1 câu): Hỗ trợ bác sĩ đọc ảnh X-Ray nhanh hơn.
+
+Công ty thành viên: ☑ Vinmec
+
+Ai đang đau (Actor)?
+
+Bác sĩ chẩn đoán hình ảnh.
+
+Workflow hiện tại
+
+Nhận ảnh
+Đọc thủ công
+Viết báo cáo
+Trả kết quả
+
+Bottleneck
+
+Bước 2
+
+⏱ 10-15 phút/bệnh nhân
+
+AI hỗ trợ
+
+Khoanh vùng bất thường và đề xuất nhận định.
+
+Metric
+
+Giảm thời gian đọc phim xuống dưới 8 phút.
+
+Quick Architecture
+
+☑ LLM
+
+☑ Agent
 ```
 
 > [!TIP]
