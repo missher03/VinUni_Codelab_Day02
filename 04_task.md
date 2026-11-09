@@ -40,7 +40,7 @@ Không chia việc, không sao chép của nhau.
 
 | Thành viên | 01-problem-scan | prompt_prototype.py | 03-ai-log |
 |---|:-:|:-:|:-:|
-| 1. Nguyễn Văn Quốc | ✅ | ✅ (cần chạy xác nhận) | ⬜ |
+| 1. Nguyễn Văn Quốc | ✅ | ✅ (cần chạy xác nhận) | ✅ |
 | 2. _[Họ tên]_ | ⬜ | ⬜ | ⬜ |
 | 3. _[Họ tên]_ | ⬜ | ⬜ | ⬜ |
 | 4. _[Họ tên]_ | ⬜ | ⬜ | ⬜ |
