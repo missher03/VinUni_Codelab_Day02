@@ -5,10 +5,10 @@
 > | # | Họ và tên | Email | Branch | Vai trò |
 > |---|---|---|---|---|
 > | 1 | Nguyễn Văn Quốc | quoc.nvsoict@gmail.com | `nguyenvanquoc` | **Trưởng nhóm** + Chủ ý tưởng CareFollow — Problem Statement |
-> | 2 | _[Họ tên]_ | _[email]_ | _[branch]_ | Workflow Mapping + Sơ đồ |
-> | 3 | _[Họ tên]_ | _[email]_ | _[branch]_ | AI Fit (Rule vs LLM vs Agent) |
-> | 4 | _[Họ tên]_ | _[email]_ | _[branch]_ | Future-State Flow (HITL + Fallback) |
-> | 5 | _[Họ tên]_ | _[email]_ | _[branch]_ | Evaluate & Decision |
+> | 2 | _[Họ tên]_ | _[email]_ | `lequockhanh` | Workflow Mapping + Sơ đồ |
+> | 3 | _[Họ tên]_ | _[email]_ | `lethanhnguyen` | AI Fit (Rule vs LLM vs Agent) |
+> | 4 | _[Họ tên]_ | _[email]_ | `nguyen-manh-cuong` | Future-State Flow (HITL + Fallback) |
+> | 5 | _[Họ tên]_ | _[email]_ | `nguyen-minh-quan` | Evaluate & Decision |
 >
 
 
