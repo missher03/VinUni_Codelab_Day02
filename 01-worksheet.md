@@ -63,10 +63,10 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
+| 1 |VinFast |Stakeholder Pain |Chủ xe chỉ phát hiện pin xuống cấp khi xe đã có dấu hiệu bất thường, gây phát sinh chi phí bảo trì lớn. |
+| 2 |Xanh SM |Repetitive |Hệ thống điều phối xe trong giờ cao điểm chưa tối ưu khiến khách chờ lâu và tài xế phải chạy rỗng nhiều. |
+| 3 |Vinhomes|Time-consuming |Ban quản lý phải xử lý hàng trăm yêu cầu cư dân mỗi ngày qua hotline và email, mất nhiều thời gian phản hồi. |
+| 4 |Vinmec |AI-upgrade | |
 | 5 | | | |
 
 ---
